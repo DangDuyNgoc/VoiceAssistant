@@ -1,4 +1,5 @@
 import os
+import platform
 import struct
 import time
 import pvporcupine
@@ -104,6 +105,18 @@ def getCurrentDateTime(query):
         current_date = now.strftime("%d-%m-%Y")
         speak(f"Today's date is {current_date}")
 
+def shutdownSystem():
+    system_platform = platform.system()
+    if system_platform == "Windows":
+        os.system("shutdown /s /t 1")
+    elif system_platform == "Linux":
+        os.system("shutdown now")
+    elif system_platform == "Darwin":  # macOS
+        os.system("shutdown -h now")
+    else:
+        # Hệ điều hành không được hỗ trợ
+        print("Shutdown not supported on this operating system")
+
 def keyword():
     porcupine=None
     paud=None
@@ -140,6 +153,7 @@ def keyword():
             audio_stream.close()
         if paud is not None:
             paud.terminate()
+
 def chatBot(query):
     user_input = query.lower()
     chatbot = hugchat.ChatBot(cookie_path="engine\cookie.json")

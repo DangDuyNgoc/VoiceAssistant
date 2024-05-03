@@ -1,7 +1,7 @@
 import pyttsx3
 import speech_recognition as sr
 import eel
-import time
+import os
 
 def speak(text):
     text = str(text)
@@ -69,6 +69,13 @@ def allCommands(message = 1):
         elif "time" in query or "date" in query:
             from engine.feature import getCurrentDateTime
             getCurrentDateTime(query)
+        elif "shutdown system" in query:
+            from engine.feature import shutdownSystem
+            shutdownSystem(query)
+        elif "focus mode" in query:
+            speak("Enter the focus mode")
+            os.startfile("C:\\Users\\ADMIN\\Documents\\VoiceAssistant\\focus_mode.py")
+            # exit()
         else:
             from engine.feature import chatBot
             chatBot(query)
