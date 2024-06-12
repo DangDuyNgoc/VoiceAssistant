@@ -10,10 +10,13 @@ import pyaudio
 import wikipedia
 import requests
 import datetime
+import googletrans
+from googletrans import Translator
 from bs4 import BeautifulSoup
 import pyautogui as autogui
 from hugchat import hugchat
 import pywhatkit as kit
+
 from playsound import playsound
 from engine.command import speak
 from engine.config import ASSISTANT_NAME
@@ -116,6 +119,32 @@ def shutdownSystem():
     else:
         # Hệ điều hành không được hỗ trợ
         print("Shutdown not supported on this operating system")
+
+def scheduleDay(task, filepath): 
+    try: 
+        with open(filepath, "a") as file:
+            file.write(task + "\n")
+        print("Task added")
+    except Exception as e:
+       print(f"Have an error {e}")
+
+def setArlam(hour, minute):
+    now = time.localtime()
+    current_hour = now.tm_hour
+    current_minute = now.tm_min
+
+    alarm_time = hour * 3600 + minute * 60
+    current_time = current_hour * 3600 + current_minute * 60
+
+    if alarm_time < current_time:
+        speak("")
+
+def translateLanguage(element):
+    print(element)
+    translator = Translator()
+    translated = translator.translate(element, src='en', dest='vi')
+    speak(str(translated.text))
+    print(translated.text)
 
 def keyword():
     porcupine=None

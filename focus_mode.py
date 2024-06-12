@@ -5,7 +5,7 @@ import sys
 
 def is_admin():
     try:
-        return ctypes.windll.shell32.IsUserAdmin()
+        return ctypes.windll.shell32.IsUserAnAdmin()
     except:
         return False
 
@@ -18,7 +18,7 @@ if is_admin:
 
     print(current_time)
     time.sleep(2)
-    web_list = ["facebook.com", "www.twitter.com", "www.tiktok.com", "www.instagram.com", "youtube.com", "www.youtube.com", "facebook.com"]
+    web_list = ["www.facebook.com", "www.twitter.com", "www.tiktok.com", "www.instagram.com", "youtube.com", "www.youtube.com", "facebook.com"]
     if(current_time < Stop_Time):
         with open(host_path, "r+") as file: 
             content = file.read()

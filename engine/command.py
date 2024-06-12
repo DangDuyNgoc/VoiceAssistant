@@ -2,6 +2,9 @@ import pyttsx3
 import speech_recognition as sr
 import eel
 import os
+import re
+
+voice_query = []
 
 def speak(text):
     text = str(text)
@@ -15,7 +18,6 @@ def speak(text):
     eel.receiverText(text)
     engine.runAndWait()
 
-
 def takeCommand(): 
     recognizer  = sr.Recognizer()
 
@@ -28,23 +30,27 @@ def takeCommand():
     try: 
         print("Recognizing")
         eel.DisplayMessage("Recognizing....")
-        query = recognizer.recognize_google(audio, language='en-vi')
+        query = recognizer.recognize_google(audio, language='en-en')
         print(f"You Said: {query}")
         eel.DisplayMessage(query)
     except Exception as ex: 
-        print("sorry, could not recognize")
+        print("sorry, could not recognize", ex)
         return ""
 
     return query.lower()
 
 @eel.expose
 def allCommands(message = 1): 
+    global voice_query
+
     if(message == 1):
         query = takeCommand()
+        voice_query.append(str(query))
         print(query)
         eel.senderText(query)
     else:
         query = message
+        voice_query.append(str(query))
         eel.senderText(query)
     try: 
         if "open" in query:
@@ -71,11 +77,22 @@ def allCommands(message = 1):
             getCurrentDateTime(query)
         elif "shutdown system" in query:
             from engine.feature import shutdownSystem
-            shutdownSystem(query)
+            shutdownSystem()
         elif "focus mode" in query:
             speak("Enter the focus mode")
             os.startfile("C:\\Users\\ADMIN\\Documents\\VoiceAssistant\\focus_mode.py")
             # exit()
+        elif "schedule my day" in query:
+            from engine.feature import scheduleDay
+            scheduleDay()
+        elif "translate" in query:
+            from engine.feature import translateLanguage
+            voice_query = [element for element in voice_query if "translate" not in element]
+            if len(voice_query) > 1:
+                element = voice_query[-2]
+            else:
+                element = voice_query[-1]
+            translateLanguage(element)
         else:
             from engine.feature import chatBot
             chatBot(query)
