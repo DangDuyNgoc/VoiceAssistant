@@ -3,7 +3,6 @@ envassistant
 assistant.db
 /engine/__pycache__
 __pycache__
-/engine/cookie.json
 prompt_template.py
 llm_chains.py
 config.yaml

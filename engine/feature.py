@@ -73,6 +73,63 @@ def PlayYoutube(query):
     speak("Playing "+search_term+" on YouTube")
     kit.playonyt(search_term)
 
+def focusOnBrowser():
+    browser = [window for window in autogui.getAllWindows() if "youtube" in window.title.lower()]
+    if browser:
+        browser = browser[0]
+        browser.activate()
+        time.sleep(0.5)
+
+def conPauseYoutubeVideo(query):
+    try:
+        if "pause" in query or "stop" in query:
+            focusOnBrowser()
+            autogui.press('space')
+            speak("Video paused")
+        if "continue" in query:
+            focusOnBrowser()
+            autogui.press('space')
+            speak("Video continue")
+    except Exception as e:
+        print(e)
+        speak("somthing wrong")
+
+
+def skipRewindYoutubeVideo(number, query):
+    seconds = number
+    try:
+        if number and "skip" in query:
+            focusOnBrowser()
+            while number >= 0:
+                autogui.press('right')
+                number -= 5
+            speak("Video skipped " + str(seconds) + " seconds")
+        if number and "rewind" in query:
+            focusOnBrowser()
+            while number >= 0:
+                autogui.press('left')
+                number -= 5
+            speak("Video rewinded " + str(seconds) + " seconds")
+    except Exception as e:
+        print(e)
+        speak("somthing wrong")
+
+
+def volumeDownUp(change, query):
+    try:
+        if "increase volume by" in query and 0 <= change <= 100:
+            for _ in range(change):
+                autogui.press('volumeup')
+                time.sleep(0.05)
+            speak("increase volume by " + str(change * 2) + " units")
+        if "decrease volume by" in query and 0 <= change <= 100:
+            for _ in range(change):
+                autogui.press('volumedown')
+                time.sleep(0.05)
+            speak("decrease volume by " + str(change * 2) + " units")
+    except Exception as e:
+        print(e)
+
 def SearchGoogle(query):
     speak("What do you want to search on google?")
     kit.search(query)

@@ -59,6 +59,23 @@ def allCommands(message = 1):
         elif "on youtube" in query: 
             from engine.feature import PlayYoutube
             PlayYoutube(query)
+        elif "stop" in query or "pause" in query or "continue" in query:
+            from engine.feature import conPauseYoutubeVideo
+            conPauseYoutubeVideo(query)
+        elif "skip" in query or "rewind" in query:
+            from engine.feature import skipRewindYoutubeVideo
+            numbers = re.findall(r'\d+', query)
+            number = 5
+            if numbers:
+                number = int(numbers[0])
+            skipRewindYoutubeVideo(number, query)
+        elif "volume" in query:
+            from engine.feature import volumeDownUp
+            numbers = re.findall(r'\d+', query)
+            change = 15
+            if numbers:
+                change = int(numbers[0])
+            volumeDownUp(change, query)
         elif "google" in query:
             from engine.feature import SearchGoogle
             query = takeCommand().lower()
